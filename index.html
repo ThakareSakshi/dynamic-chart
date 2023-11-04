@@ -24,14 +24,15 @@
     
     const newChart=new Chart(Dchart,
     {
-    type: 'bar',
+    type: 'line',
     data: {
       labels: DataLabels,
       datasets: [{
         label: '# of Votes',
         data: chartData,
-        borderWidth: 1,
-        backgroundColor:["pink","grey","limegreen",'orange',"yellow"]
+        borderWidth: 2,
+        backgroundColor:["pink","grey","limegreen",'orange',"yellow"],
+        borderColor:'blue'
       }]
     },
     options: {
