@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>dynamic chart</title>
+</head>
+<body>
+    
+    <div class="chart_container">
+        <canvas class="dynamicChart"></canvas>
+    </div>
+</body>
+
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    let Dchart=document.querySelector(".dynamicChart");
+    let chartData=[];
+    let DataLabels=[];
+    let num=5;
+
+   
+    
+    const newChart=new Chart(Dchart,
+    {
+    type: 'bar',
+    data: {
+      labels: ['time', 'guest_nice', 'guest', 'steal', 'softirq', 'irq', 'user', 'system', 'nice', 'iowait'],
+      datasets: [{
+        label: '# of Votes',
+        data:[],
+        borderWidth: 1,
+        backgroundColor:["pink","grey","limegreen",'orange',"yellow"]
+      }]
+    },
+    options: {
+      scales: {
+        y: {
+          beginAtZero: true
+        }
+      }
+    }
+  });
+
+  async function fetchApi(){
+      let realdata= await fetch("https://netdata.firehol.org/api/v1/data?chart=system.cpu&points=1&after=-2&options=seconds");
+      let result=await realdata.json();
+     return result;
+  }
+
+  setInterval(async()=>{
+     let rdata= await fetchApi();
+     newChart.data.datasets[0].data=rdata.data[0].slice(1,);
+      
+     
+      newChart.update();
+     
+
+    },2000);
+</script>
+</html>
